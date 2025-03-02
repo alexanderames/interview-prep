@@ -1,10 +1,31 @@
 # Interview Prep
 
+## Table of Contents
+1. [Dijkstra's Algorithm](#dijkstras-algorithm)
+   - [Relevance to Financial Services](#relevance-to-financial-services)
+   - [Code Examples](#code-examples)
+2. [BFS (Breadth-First Search)](#bfs-breadth-first-search)
+   - [Code Examples](#code-examples-1)
+3. [DFS (Depth-First Search)](#dfs-depth-first-search)
+   - [Code Examples](#code-examples-2)
+4. [Map Tuples to Extract Specific Values](#map-tuples-to-extract-specific-values)
+5. [Data Design Scenarios](#data-design-scenarios)
+   - [Common Data Types](#common-data-types)
+     - [Heaps (Priority Queues)](#heaps-priority-queues)
+     - [Trees (Segment Trees, Fenwick Trees)](#trees-segment-trees-fenwick-trees)
+     - [Graphs](#graphs)
+     - [Time Series Storage](#time-series-storage)
+     - [Real-Time Alerting System](#real-time-alerting-system)
+     - [Order Matching Engine](#order-matching-engine)
+     - [Handling High-Frequency Data Streams](#handling-high-frequency-data-streams)
+     - [Latency Optimization](#latency-optimization)
+     - [Data Aggregation](#data-aggregation)
+
 ## Dijkstra's Algorithm
 
 **Interview Question:** How would you find the shortest path between two nodes in a weighted graph?
 
-**Relevance to Financial Services:**
+### Relevance to Financial Services:
 
 - Optimal Routing for Transactions
   - Financial services often need to route transactions through a network of banks or financial institutions. Finding the shortest path ensures that transactions are processed quickly and efficiently, minimizing delays and costs.
@@ -13,9 +34,11 @@
 - Network Analysis:
   - Financial networks can be modeled as graphs where nodes represent entities (banks, accounts) and edges represent transactions or relationships. Finding the shortest path helps in analyzing the flow of money and detecting potential bottlenecks or vulnerabilities.
 
-### Code Examples
+#### Code Examples
 
-#### pseudo
+- [python example](dijkstra.py) using `heapq`
+- [ruby example](dijkstra.rb) using `priority_queue`
+- a pseudo-code example of how dijkstra works below:
 
 ```shell
 initialize a priority queue with the starting node and distance 0
@@ -32,77 +55,6 @@ while the priority queue is not empty:
 return the dictionary of distances
 ```
 
-#### Python
-
-```python
-import heapq
-
-def dijkstra(graph, start):
-    heap = [(0, start)]
-    distances = {node: float('inf') for node in graph}
-    distances[start] = 0
-
-    while heap:
-        current_distance, current_node = heapq.heappop(heap)
-
-        if current_distance > distances[current_node]:
-            continue
-
-        for neighbor, weight in graph[current_node].items():
-            distance = current_distance + weight
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                heapq.heappush(heap, (distance, neighbor))
-
-    return distances
-
-# Example usage:
-graph = {
-    'A': {'B': 1, 'C': 4},
-    'B': {'A': 1, 'C': 2, 'D': 5},
-    'C': {'A': 4, 'B': 2, 'D': 1},
-    'D': {'B': 5, 'C': 1}
-}
-print(dijkstra(graph, 'A'))  # Outputs shortest paths from 'A'
-```
-
-#### Ruby
-
-```ruby
-require 'priority_queue'
-
-def dijkstra(graph, start)
-  distances = Hash.new(Float::INFINITY)
-  distances[start] = 0
-  pq = PriorityQueue.new
-  pq[start] = 0
-
-  until pq.empty?
-    current_node, current_distance = pq.delete_min
-
-    graph[current_node].each do |neighbor, weight|
-      distance = current_distance + weight
-      if distance < distances[neighbor]
-        distances[neighbor] = distance
-        pq[neighbor] = distance
-      end
-    end
-  end
-
-  distances
-end
-
-# Example usage:
-graph = {
-  'A' => {'B' => 1, 'C' => 4},
-  'B' => {'A' => 1, 'C' => 2, 'D' => 5},
-  'C' => {'A' => 4, 'B' => 2, 'D' => 1},
-  'D' => {'B' => 5, 'C' => 1}
-}
-puts dijkstra(graph, 'A').inspect  # Outputs shortest paths from 'A'
-```
-
-
 ## BFS (Breadth-First Search)
 
 **Breadth-First Nature:**
@@ -113,7 +65,7 @@ In unweighted graphs (or grids/mazes where every move costs the same), the first
 
 ### Code examples
 
-First, let's learn using pseudocode so that we understand the overall concept
+First, let's learn using pseudo-code so that we understand the overall concept
 
 #### pseudo
 
@@ -451,7 +403,7 @@ DFS is great for problems requiring deep exploration before considering alternat
 4. **Repeat until the stack is empty**.
 5. **Use recursion for cleaner implementation when applicable**.
 
-## Hash Map (Dictionary)
+## Map Tuples to Extract Specific Values
 
 > Write a function that takes a list of tuples, where each tuple contains (department, employee, salary), and returns a dictionary mapping each department to the average salary for that department. Assume the list is unsorted.
 
